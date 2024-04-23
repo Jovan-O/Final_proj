@@ -53,6 +53,12 @@ public class ThreadedClient  implements Runnable
                         out.writeInt(jin.nextInt());
                         out.flush();
                         //Can use Out
+
+                        try{
+                            Thread.sleep(500);
+                        }catch(InterruptedException e){
+                            System.out.println("Problem with sleep on player turn: " + e);
+                        }
                     }
                     else{
                         if(!intCounter.gameStarted){

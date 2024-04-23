@@ -94,7 +94,7 @@ public class SharedMemoryObject implements java.io.Serializable
     public String update()
     {
         String all = "";
-        for(int j = 0; j < 4; j++)
+        for(int j = 0; j < playerCount; j++)
         {
             String p = "";
             for(int i = 0; i < 100; i++)
