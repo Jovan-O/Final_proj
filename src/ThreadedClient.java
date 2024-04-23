@@ -23,10 +23,12 @@ public class ThreadedClient  implements Runnable
     public Boolean writer;
     Scanner jin;
     SharedMemoryObject intCounter;
+    int turn;
     //I can make this static as there will only be two threads on the client.
-    static int myId;
+    int myId;
     public ThreadedClient(Socket c, Boolean w)
     {
+       
         con = c;
         writer = w;    
     }
@@ -44,6 +46,7 @@ public class ThreadedClient  implements Runnable
                 while(con.isConnected())
                 { 
                     System.out.println("Inside Writer");
+                    System.out.println("my turn is"+turn);
                     System.out.println("Enter a guess between 0 and 9: ");
                     //int rand = (int)(Math.random()*requestedNumber);
                     out.writeInt(jin.nextInt());

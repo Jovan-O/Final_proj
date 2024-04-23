@@ -54,53 +54,7 @@ public class Threading1 {
                 Logger.getLogger(Threading1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-      
-        /*PC_Queue pcq = new PC_Queue();
-        MyFirstThread z = new MyFirstThread("B1",10);
-        MyFirstThread x = new MyFirstThread("A1",10);
 
-        
-        Thread t1 = new Thread(x);
-        Thread t2 = new Thread(z);
-    
-        t1.start();
-       t2.start();
-
-        
-        try
-        {
-            t1.join();
-            t2.join();
- 
-            
-        }
-        catch(InterruptedException e)
-        {
-            System.out.println("ERROR: Thread never joined!");
-        }
-       
-        
-        
-        /*
-       MyFirstThread x = new MyFirstThread("Hello World!",500);
-       MyFirstThread y = new MyFirstThread("The quick red fox jumped over the lazy brown dog!",200);
-       
-       Thread t1 = new Thread(x);
-       Thread t2 = new Thread(y);
-       t1.start();
-       t2.start();
-       try
-       {
-        t1.join();
-        t2.join();
-       }
-       catch (InterruptedException e)
-       {
-           System.out.println(e.toString());
-       }
-       System.out.println("Will be printed last!");
-    */
-     //tpools();
     }
     
 public static void tpools()
