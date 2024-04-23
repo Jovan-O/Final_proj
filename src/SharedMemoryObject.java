@@ -11,30 +11,52 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class SharedMemoryObject implements java.io.Serializable
 {
-    ReentrantLock myLock;    
-    private int [] numbers;
+    ReentrantLock myLock;
+
+    //players array and player count are interconnected
+    //player count tracks how many new connections are formed while the player array keeps track of ID's
+    private int [] players = new int[4];
+    private int playerCount = 0;
     private boolean isDirty;
+
+    public boolean gameStarted;
     int [] positions=new int[4];
     int turn=-1;
     int mypos;
     int monsterpos=0;
     String[] t = new String[4];
-   
-
-
     
     public SharedMemoryObject()
     {
         myLock = new ReentrantLock();
         turn+=1;
         mypos = 0;      
-        positions[turn]=mypos; 
+        positions[turn]=mypos;
+        gameStarted = false;
     }
     public void gameOver()
     {
         System.out.println("Game over");
     }
-    public void addNumber(int n)
+
+    public void addPlayer(int connectionID){
+        myLock.lock();
+        // grabbing player info
+        // players[connection count]
+        players[playerCount] = connectionID;
+        playerCount++;
+        myLock.unlock();
+    }
+
+    public void gameStart(){
+        myLock.lock();
+        gameStarted = true;
+        System.out.println("We got all of our players!!!");
+        isDirty = true;
+        myLock.unlock();
+    }
+
+    public void clientInput(int n)
     {
         if(mypos <100)
         {   
@@ -47,7 +69,7 @@ public class SharedMemoryObject implements java.io.Serializable
             myLock.unlock();
             System.out.println("After adding "+n+": "+mypos);
             System.out.println(toString());
-            turn = (turn + 1) % 4; // Ensure turn is always between 0 and 3
+            turn = (turn + 1) % playerCount; // Ensure turn is always between 0 and player count (2)
             isDirty = true;
         }
         if(mypos>=100)
@@ -94,6 +116,7 @@ public class SharedMemoryObject implements java.io.Serializable
         }
         return all;
     }
+
     @Override
     public String toString()
     {
@@ -104,8 +127,6 @@ public class SharedMemoryObject implements java.io.Serializable
             
             myLock.unlock();
 
-        
-        
         return s;
               
     }

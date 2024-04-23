@@ -3,10 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
@@ -48,6 +51,7 @@ public class ServerThreaded implements Runnable
                          //System.out.println("Are we in the while? as a writer");
                         if(intCounter.getIsDirty())
                         {
+                            
                             System.out.println("Sending "+intCounter);
                             out.reset();
                             out.writeObject(intCounter);
@@ -76,16 +80,13 @@ public class ServerThreaded implements Runnable
                 }
             else
             {
-                // clients input on read
                 ObjectInputStream in = new ObjectInputStream(con.getInputStream());
                 while(con.isConnected())
-                {
-                    if(myId == intCounter.getTurn()){
-                        //System.out.println("Are we in the while? as a reader");
-                        int temp = in.readInt();
-                        System.out.println("We recieved an "+temp);
-                        intCounter.clientInput(temp);
-                    }
+                {                               
+                    //System.out.println("Are we in the while? as a reader");
+                    int temp = in.readInt();
+                    System.out.println("We recieved an "+temp);
+                    intCounter.addNumber(temp);
                     try
                     {
                         Thread.sleep(500);
@@ -97,7 +98,6 @@ public class ServerThreaded implements Runnable
                 }
             }
         }
-
         catch(IOException e)
         {
              System.out.println("ERROR with Data Writer/Reader: "+e.toString());
