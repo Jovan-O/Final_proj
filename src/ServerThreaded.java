@@ -80,7 +80,8 @@ public class ServerThreaded implements Runnable
                 ObjectInputStream in = new ObjectInputStream(con.getInputStream());
                 while(con.isConnected())
                 {
-                    if(myId == intCounter.getTurn()){
+                    if(myId == intCounter.getTurn())
+                    {
                         //System.out.println("Are we in the while? as a reader");
                         int temp = in.readInt();
                         System.out.println("We recieved an "+temp);

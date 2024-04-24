@@ -22,21 +22,33 @@ public class SharedMemoryObject implements java.io.Serializable
     public boolean gameStarted;
     int [] positions=new int[4];
     int turn=-1;
-    int mypos;
+    int mypos=10;
     int monsterpos=0;
     String[] t = new String[4];
     
     public SharedMemoryObject()
     {
         myLock = new ReentrantLock();
-        turn+=1;
-        mypos = 0;      
-        positions[turn]=mypos;
+        turn+=1;    
+        positions[turn]=10;
         gameStarted = false;
     }
     public void gameOver()
     {
-        System.out.println("Game over");
+        for(int i =0;i<3;i++)
+        {
+            if(positions[i]==monsterpos)
+            {
+                System.out.println("Game over Player "+ i + " got eaten");
+            }
+        
+        else if(positions[i]==100)
+        {
+            System.out.println("Game over Player "+ i +" Won");
+
+        }
+      
+    }
     }
 
     public void addPlayer(int connectionID){
@@ -64,18 +76,25 @@ public class SharedMemoryObject implements java.io.Serializable
             System.out.println("BEFORE adding "+n+": "+mypos);
             myLock.lock();
             mypos+=(10-Math.abs((Math.random()*10)-n));
+            System.out.println("The moce is "+ mypos);
             positions[turn] = mypos; // Update the position in the array
             System.out.println("the number of steps is "+ mypos);
             myLock.unlock();
             System.out.println("After adding "+n+": "+mypos);
             System.out.println(toString());
+            if(turn==2)
+            {
+                monsterRun();
+                gameOver();
+            }
             turn = (turn + 1) % playerCount; // Ensure turn is always between 0 and player count (2)
             isDirty = true;
         }
+
         if(mypos>=100)
         {
             System.out.println("Player "+ turn+ "won");
-            gameOver();
+        
         }
     }
     public int getTurn()
@@ -91,9 +110,16 @@ public class SharedMemoryObject implements java.io.Serializable
     {
         isDirty = d;
     }
+    public void monsterRun()
+    {
+        monsterpos+=(int) (Math.abs(Math.random()*20));
+    }
     public String update()
     {
+      
+        
         String all = "";
+    
         for(int j = 0; j < playerCount; j++)
         {
             String p = "";
@@ -114,7 +140,10 @@ public class SharedMemoryObject implements java.io.Serializable
             }
             all += p + "\n";
         }
+        System.out.println("The turn is "+ turn);
+       
         return all;
+
     }
 
     @Override
