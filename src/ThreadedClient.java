@@ -48,7 +48,7 @@ public class ThreadedClient  implements Runnable
                     int pos = intCounter.getMypos();
                     int monsterpos = intCounter.getMonsterpos();
                     if(isMyTurn && intCounter.gameStarted){
-                        if(pos>monsterpos)
+                        if(pos>monsterpos&& pos <100)
                         {
                         System.out.println("YOUR TURN");
                         System.out.println("my turn is" + intCounter.getTurn());
@@ -69,6 +69,11 @@ public class ThreadedClient  implements Runnable
                         intCounter.updateTurn();
 
                     }
+                    if(pos>=100)
+                    {
+                        System.out.println("You won pookie");
+                    }
+                   
                     }
                     else{
                         if(!intCounter.gameStarted){

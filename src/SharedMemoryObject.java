@@ -126,7 +126,7 @@ public class SharedMemoryObject implements java.io.Serializable
     }
     public void monsterRun()
     {
-        monsterpos+=(int) (Math.abs(Math.random()*30)+10);
+        monsterpos+=(int) (Math.abs(Math.random()*10)+1);
         for(int i =0;i<3;i++)
         {
         if(positions[i]<=monsterpos)
