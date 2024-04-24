@@ -20,7 +20,7 @@ public class SharedMemoryObject implements java.io.Serializable
     private boolean isDirty;
 
     public boolean gameStarted;
-    int [] positions=new int[4];
+    int [] positions={10,10,10,10};
     int turn=-1;
     int mypos=10;
     int monsterpos=0;
@@ -30,8 +30,20 @@ public class SharedMemoryObject implements java.io.Serializable
     {
         myLock = new ReentrantLock();
         turn+=1;    
-        positions[turn]=10;
+     
         gameStarted = false;
+    }
+    public void updateTurn()
+    {
+        turn = (turn + 1) % playerCount;
+    }
+    public int getMypos()
+    {
+        return mypos;
+    }
+    public int getMonsterpos()
+    {
+        return monsterpos;
     }
     public void gameOver()
     {
@@ -70,7 +82,7 @@ public class SharedMemoryObject implements java.io.Serializable
 
     public void clientInput(int n)
     {
-        if(mypos <100)
+        if(mypos <100 && mypos>monsterpos)
         {   
             System.out.println("My turn is" + turn);
             System.out.println("BEFORE adding "+n+": "+mypos);
@@ -86,12 +98,14 @@ public class SharedMemoryObject implements java.io.Serializable
             {
                 monsterRun();
                 gameOver();
+                
             }
             turn = (turn + 1) % playerCount; // Ensure turn is always between 0 and player count (2)
             isDirty = true;
         }
+       
 
-        if(mypos>=100)
+       if(mypos>=100)
         {
             System.out.println("Player "+ turn+ "won");
         
@@ -112,7 +126,15 @@ public class SharedMemoryObject implements java.io.Serializable
     }
     public void monsterRun()
     {
-        monsterpos+=(int) (Math.abs(Math.random()*20));
+        monsterpos+=(int) (Math.abs(Math.random()*30)+10);
+        for(int i =0;i<3;i++)
+        {
+        if(positions[i]<=monsterpos)
+        {
+            System.out.print("You dead dead");
+            turn = (turn + 1) % playerCount; 
+        }
+    }
     }
     public String update()
     {

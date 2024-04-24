@@ -45,7 +45,11 @@ public class ThreadedClient  implements Runnable
                 while(con.isConnected())
                 {
                     boolean isMyTurn = myId == intCounter.getTurn();
+                    int pos = intCounter.getMypos();
+                    int monsterpos = intCounter.getMonsterpos();
                     if(isMyTurn && intCounter.gameStarted){
+                        if(pos>monsterpos)
+                        {
                         System.out.println("YOUR TURN");
                         System.out.println("my turn is" + intCounter.getTurn());
                         System.out.println("Enter a guess between 0 and 9: ");
@@ -59,6 +63,12 @@ public class ThreadedClient  implements Runnable
                         }catch(InterruptedException e){
                             System.out.println("Problem with sleep on player turn: " + e);
                         }
+                    }
+                    else if (monsterpos>=pos){
+                        System.out.println("You died booo");
+                        intCounter.updateTurn();
+
+                    }
                     }
                     else{
                         if(!intCounter.gameStarted){
